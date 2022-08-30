@@ -1,3 +1,5 @@
+--Here are a some samples of SQL commands written in order to analyze and then analyze and visualize a large COVID-19 dataset.
+
 --Deaths IN the U.S 
 
 
