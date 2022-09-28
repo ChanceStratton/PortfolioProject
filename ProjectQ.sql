@@ -1,7 +1,7 @@
---Here are a some samples of SQL commands written in order to analyze and then analyze and visualize a large COVID-19 dataset.
+--Here are queries written to analyze the large dataset pertaining to COVID-19 data publicly available at ourworldindata.com.
+The queries in this project progressively get more complex as I attempt to answer increasingly complex questions about the data.  
 
 --Deaths IN the U.S 
-
 
 SELECT location, date, total_cases, total_deaths, (total_deaths/total_cases) *100 as deathpercentage
 From Project..Coviddeaths
@@ -13,7 +13,6 @@ Order by 1,2 ;
 --Total Cases vs Population
 --Percent of Population infected 
 
-
 SELECT location, date, total_cases, population, (total_cases/population) *100 as populationinfectedpercent
 From Project..Coviddeaths
 WHERE location LIKE '%states%'
@@ -23,7 +22,6 @@ Order by 1,2 ;
 
 --Total Deaths by Country
 
-
 SELECT location, MAX (cast (total_deaths as int)) as totaldeathcount 
 From Project..Coviddeaths
 WHERE continent is not null 
@@ -32,7 +30,6 @@ Order by totaldeathcount desc;
 
 
 -- Total Deaths by Continent 
-
 
 SELECT location, MAX (cast (total_deaths as int)) as totaldeathcount 
 From Project..Coviddeaths
@@ -53,9 +50,7 @@ GROUP BY location, population
 Order by populationinfectedpercent desc;
 
 
-
 --Continents with the Highest Deatcount 
-
 
 SELECT location,MAX (cast(total_deaths as int)) as totaldeaths
 From Project..Coviddeaths
@@ -68,7 +63,6 @@ Order by totaldeaths desc;
 
 --Continents with the Highest Deathrate 
 
-
 SELECT location, MAX (population)as peakpopulation, MAX (cast(total_deaths as int)) as totaldeaths, MAX ((total_deaths/population)) *100.00 as populationdeathspercent
 From Project..Coviddeaths
 WHERE continent is null 
@@ -80,7 +74,6 @@ Order by populationdeathspercent desc;
 
 --Global Numbers 
 
-
 Select SUM (new_cases) as globalcases, SUM (cast(new_deaths as int)) as globaldeaths, 
 SUM (cast(new_deaths as int))/ SUM (new_cases) * 100 as globaldeathrate
 From Project..Coviddeaths
@@ -89,7 +82,6 @@ Order by 1,2 ;
 
 
 --Global Numbers Time progression 
-
 
 Select date, SUM (new_cases) as globalcases, SUM (cast(new_deaths as int)) as globaldeaths, 
 SUM (cast(new_deaths as int))/ SUM (new_cases) * 100 as globaldeathrate
@@ -110,6 +102,7 @@ ON cd.location = cv.location
 AND cd.date = cv.date
 WHERE cd.continent is not null 
 order by 2,3
+
 
 --Expanding Total Population Vs Vaccinations using CTE
 
@@ -186,7 +179,6 @@ AND cd.date = cv.date
 WHERE cd.continent is not null 
 --order by 2,3
  
-
 Select *, (rollingpeoplevaccinated/population) as PercentPopAtLeast1Vax
 FROM #percentvaccinated
 ORDER BY location, date
